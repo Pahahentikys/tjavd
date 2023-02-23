@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.company.marketer.enums.JsonNodeName.*;
+
 @Service
 @RequiredArgsConstructor
 public class JsonProccessingServiceImpl implements JsonProccessingService {
@@ -23,17 +25,17 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
     public ParsedJsonInfo parseJsonFile(@NonNull String jsonFileName) {
             var root = getRootOfJson(jsonFileName);
 
-            var chart = root.get("chart");
-            var result = chart.get("result");
+            var chart = root.get(CHART.getValue());
+            var result = chart.get(RESULT.getValue());
 
-            var timestamp = result.get(0).get("timestamp");
+            var timestamp = result.get(0).get(TIMESTAMP.getValue());
 
-            var indicators = result.get(0).get("indicators");
-            var quote = indicators.get("quote");
+            var indicators = result.get(0).get(INDICATORS.getValue());
+            var quote = indicators.get(QUOTE.getValue());
 
-            var open = quote.get(0).get("open");
-            var close = quote.get(0).get("close");
-            var high = quote.get(0).get("high");
+            var open = quote.get(0).get(OPEN.getValue());
+            var close = quote.get(0).get(CLOSE.getValue());
+            var high = quote.get(0).get(HIGH.getValue());
 
         return buildParsedJsonInfo(timestamp, open, close, high);
     }
