@@ -1,6 +1,7 @@
 package com.company.marketer.service.impl;
 
 import com.company.marketer.domain.CompanyInfo;
+import com.company.marketer.enums.CompanyName;
 import com.company.marketer.repository.CompanyInfoRepository;
 import com.company.marketer.service.CompanyInfoService;
 import lombok.NonNull;
@@ -24,5 +25,29 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Override
     public Mono<CompanyInfo> findLastByName(@NonNull String name) {
         return companyInfoRepository.findLastByName(name);
+    }
+
+    @Override
+    public Mono<Void> storeDataWithFilteringOnExistingInfo(@NonNull List<CompanyInfo> listOfCompanies, @NonNull CompanyName companyName) {
+        findLastByName(companyName.name())
+                .blockOptional()
+                .ifPresentOrElse(ci -> {
+                            var lastDateInfo = ci.getDate();
+
+                            for (int i = 0; i < listOfCompanies.size(); i++) {
+                                var companyInfo = listOfCompanies.get(i);
+
+                                if (companyInfo.getDate().isAfter(lastDateInfo)) {
+                                    var newCompaniesForPersist = listOfCompanies.subList(i, listOfCompanies.size());
+
+                                    saveAll(newCompaniesForPersist).subscribe();
+
+                                    break;
+                                }
+                            }
+                        },
+                        () -> saveAll(listOfCompanies).subscribe());
+
+        return Mono.empty();
     }
 }

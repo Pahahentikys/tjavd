@@ -9,6 +9,7 @@ import com.company.marketer.service.JsonProccessingService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,29 +25,12 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
     private final CompanyInfoService companyInfoService;
 
     @Override
-    public void importDataByCompanyName(@NonNull CompanyName companyName) {
+    public Mono<Void> importDataByCompanyName(@NonNull CompanyName companyName) {
         var parsedInfo = jsonProccessingService.parseJsonFile(makeFileNameWithExtension(companyName));
 
         var listOfCompanies = getListOfCompanyInfo(parsedInfo, companyName);
 
-        companyInfoService.findLastByName(companyName.name())
-                .blockOptional()
-                .ifPresentOrElse(ci -> {
-                            var lastDateInfo = ci.getDate();
-
-                            for (int i = 0; i < listOfCompanies.size(); i++) {
-                                var companyInfo = listOfCompanies.get(i);
-
-                                if (companyInfo.getDate().isAfter(lastDateInfo)) {
-                                    var newCompaniesForPersist = listOfCompanies.subList(i, listOfCompanies.size());
-
-                                    companyInfoService.saveAll(newCompaniesForPersist).subscribe();
-
-                                    break;
-                                }
-                            }
-                        },
-                        () -> companyInfoService.saveAll(listOfCompanies).subscribe());
+        return companyInfoService.storeDataWithFilteringOnExistingInfo(listOfCompanies, companyName);
     }
 
     private List<CompanyInfo> getListOfCompanyInfo(@NonNull ParsedJsonInfo parsedJsonInfo, @NonNull CompanyName companyName) {
