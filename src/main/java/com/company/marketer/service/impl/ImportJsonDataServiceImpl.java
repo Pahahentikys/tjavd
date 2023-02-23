@@ -3,6 +3,7 @@ package com.company.marketer.service.impl;
 import com.company.marketer.domain.CompanyInfo;
 import com.company.marketer.domain.ParsedJsonInfo;
 import com.company.marketer.enums.CompanyName;
+import com.company.marketer.service.CompanyInfoService;
 import com.company.marketer.service.ImportJsonDataService;
 import com.company.marketer.service.JsonProccessingService;
 import lombok.NonNull;
@@ -20,12 +21,15 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
 
     private final JsonProccessingService jsonProccessingService;
 
+    private final CompanyInfoService companyInfoService;
+
     @Override
     public void importDataByCompanyName(@NonNull CompanyName companyName) {
         var parsedInfo = jsonProccessingService.parseJsonFile(makeFileNameWithExtension(companyName));
 
         var listOfCompanies = getListOfCompanyInfo(parsedInfo, companyName);
 
+        companyInfoService.saveAll(listOfCompanies).subscribe();
     }
 
     private List<CompanyInfo> getListOfCompanyInfo(@NonNull ParsedJsonInfo parsedJsonInfo, @NonNull CompanyName companyName) {
@@ -37,10 +41,10 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
 
         var companyInfoList = new ArrayList<CompanyInfo>();
 
-        for (int i = 0; i < dateTimes.size() - 1; i++) {
+        for (int i = 0; i < dateTimes.size(); i++) {
             companyInfoList.add(new CompanyInfo(
                     UUID.randomUUID(),
-                    dateTimes.get(i),
+                    dateTimes.get(i).toLocalDate(),
                     companyName.name(),
                     closePrices.get(i),
                     highPrices.get(i),
