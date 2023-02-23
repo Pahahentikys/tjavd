@@ -1,4 +1,4 @@
-package com.company.marketer.common.enums;
+package com.company.marketer.enums;
 
 
 /**
