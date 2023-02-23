@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,21 +27,23 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule());
 
+    private final ResourceLoader resourceLoader;
+
     @NonNull
     public ParsedJsonInfo parseJsonFile(@NonNull String jsonFileName) {
-            var root = getRootOfJson(jsonFileName);
+        var root = getRootOfJson(jsonFileName);
 
-            var chart = root.get(CHART.getValue());
-            var result = chart.get(RESULT.getValue());
+        var chart = root.get(CHART.getValue());
+        var result = chart.get(RESULT.getValue());
 
-            var timestamp = result.get(FIRST_IDX_IN_ARR).get(TIMESTAMP.getValue());
+        var timestamp = result.get(FIRST_IDX_IN_ARR).get(TIMESTAMP.getValue());
 
-            var indicators = result.get(FIRST_IDX_IN_ARR).get(INDICATORS.getValue());
-            var quote = indicators.get(QUOTE.getValue());
+        var indicators = result.get(FIRST_IDX_IN_ARR).get(INDICATORS.getValue());
+        var quote = indicators.get(QUOTE.getValue());
 
-            var low = quote.get(FIRST_IDX_IN_ARR).get(LOW.getValue());
-            var close = quote.get(FIRST_IDX_IN_ARR).get(CLOSE.getValue());
-            var high = quote.get(FIRST_IDX_IN_ARR).get(HIGH.getValue());
+        var low = quote.get(FIRST_IDX_IN_ARR).get(LOW.getValue());
+        var close = quote.get(FIRST_IDX_IN_ARR).get(CLOSE.getValue());
+        var high = quote.get(FIRST_IDX_IN_ARR).get(HIGH.getValue());
 
         return buildParsedJsonInfo(timestamp, low, close, high);
     }
@@ -58,9 +61,11 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
     }
 
     private JsonNode getRootOfJson(String jsonFileName) {
-        var inputStream = JsonProccessingServiceImpl.class.getClassLoader().getResourceAsStream(jsonFileName);
+        var resource = resourceLoader.getResource("classpath:data/" + jsonFileName);
 
         try {
+            var inputStream = resource.getInputStream();
+
             return objectMapper.readTree(inputStream);
         } catch (IOException ex) {
             throw new IllegalStateException("Getting json root error", ex);
