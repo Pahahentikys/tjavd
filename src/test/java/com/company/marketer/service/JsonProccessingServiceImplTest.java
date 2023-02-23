@@ -13,8 +13,7 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Json processing test")
 class JsonProccessingServiceImplTest {
@@ -170,5 +169,8 @@ class JsonProccessingServiceImplTest {
         assertEquals(new BigDecimal("19.100000381469727"), parsedInfo.getLowPrices().get(0));
         assertEquals(new BigDecimal("21.399999618530273"), parsedInfo.getHighPrices().get(0));
         assertEquals(new BigDecimal("19.299999237060547"), parsedInfo.getClosePrices().get(0));
+
+        verify(resourceLoader).getResource(any());
+        verify(mockResource).getInputStream();
     }
 }
