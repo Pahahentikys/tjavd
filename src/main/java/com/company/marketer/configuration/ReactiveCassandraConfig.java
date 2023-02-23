@@ -1,25 +1,20 @@
-package com.company.marketer.client;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.company.marketer.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.AbstractReactiveCassandraConfiguration;
 import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
-import org.springframework.data.cassandra.core.cql.keyspace.DataCenterReplication;
 import org.springframework.data.cassandra.core.cql.keyspace.DropKeyspaceSpecification;
 import org.springframework.data.cassandra.core.cql.keyspace.KeyspaceOption;
 import org.springframework.data.cassandra.core.cql.session.init.KeyspacePopulator;
-import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
-import org.springframework.data.cassandra.repository.config.EnableReactiveCassandraRepositories;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
-@EnableReactiveCassandraRepositories("com.company.marketer.client")
 public class ReactiveCassandraConfig extends AbstractReactiveCassandraConfiguration {
     @Value("${spring.data.cassandra.contact-points:placeholder}")
     private String contactPoints;
@@ -36,6 +31,8 @@ public class ReactiveCassandraConfig extends AbstractReactiveCassandraConfigurat
     private String password;
     @Value("${spring.data.cassandra.schema-action}")
     private SchemaAction schemaAction;
+    @Value("${spring.data.cassandra.entity.base.packages}")
+    private String entityBasePackages;
 
     @Override
     protected String getContactPoints() {
@@ -72,6 +69,10 @@ public class ReactiveCassandraConfig extends AbstractReactiveCassandraConfigurat
         return keySpace;
     }
 
+    @Override
+    public String[] getEntityBasePackages() {
+        return new String[]{entityBasePackages};
+    }
 
     @Override
     protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
