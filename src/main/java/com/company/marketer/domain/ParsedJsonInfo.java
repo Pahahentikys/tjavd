@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class ParsedJsonInfo {
     private List<Integer> timestamps;
 
-    private List<BigDecimal> openPrices;
+    private List<BigDecimal> lowPrices;
 
     private List<BigDecimal> highPrices;
 
