@@ -29,7 +29,24 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
 
         var listOfCompanies = getListOfCompanyInfo(parsedInfo, companyName);
 
-        companyInfoService.saveAll(listOfCompanies).subscribe();
+        companyInfoService.findLastByName(companyName.name())
+                .blockOptional()
+                .ifPresentOrElse(ci -> {
+                            var lastDateInfo = ci.getDate();
+
+                            for (int i = 0; i < listOfCompanies.size(); i++) {
+                                var companyInfo = listOfCompanies.get(i);
+
+                                if (companyInfo.getDate().isAfter(lastDateInfo)) {
+                                    var newCompaniesForPersist = listOfCompanies.subList(i, listOfCompanies.size());
+
+                                    companyInfoService.saveAll(newCompaniesForPersist).subscribe();
+
+                                    break;
+                                }
+                            }
+                        },
+                        () -> companyInfoService.saveAll(listOfCompanies).subscribe());
     }
 
     private List<CompanyInfo> getListOfCompanyInfo(@NonNull ParsedJsonInfo parsedJsonInfo, @NonNull CompanyName companyName) {
