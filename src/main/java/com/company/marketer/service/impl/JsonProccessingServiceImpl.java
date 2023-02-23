@@ -35,23 +35,23 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
             var indicators = result.get(FIRST_IDX_IN_ARR).get(INDICATORS.getValue());
             var quote = indicators.get(QUOTE.getValue());
 
-            var open = quote.get(FIRST_IDX_IN_ARR).get(OPEN.getValue());
+            var low = quote.get(FIRST_IDX_IN_ARR).get(LOW.getValue());
             var close = quote.get(FIRST_IDX_IN_ARR).get(CLOSE.getValue());
             var high = quote.get(FIRST_IDX_IN_ARR).get(HIGH.getValue());
 
-        return buildParsedJsonInfo(timestamp, open, close, high);
+        return buildParsedJsonInfo(timestamp, low, close, high);
     }
 
-    private ParsedJsonInfo buildParsedJsonInfo(@NonNull JsonNode timestamp, @NonNull JsonNode open, @NonNull JsonNode close, @NonNull JsonNode high) {
+    private ParsedJsonInfo buildParsedJsonInfo(@NonNull JsonNode timestamp, @NonNull JsonNode low, @NonNull JsonNode close, @NonNull JsonNode high) {
         var listOfTimestamps = convertJsonNodeToListWithSuitableType(timestamp, new TypeReference<List<Integer>>(){});
 
-        var listOfOpenPrices = convertJsonNodeToListWithSuitableType(open, new TypeReference<List<BigDecimal>>(){});
+        var listOfLowPrices = convertJsonNodeToListWithSuitableType(low, new TypeReference<List<BigDecimal>>(){});
 
         var listOfClosePrises = convertJsonNodeToListWithSuitableType(close, new TypeReference<List<BigDecimal>>(){});
 
         var listOfHighPrices = convertJsonNodeToListWithSuitableType(high, new TypeReference<List<BigDecimal>>(){});
 
-        return new ParsedJsonInfo(listOfTimestamps, listOfOpenPrices, listOfHighPrices, listOfClosePrises);
+        return new ParsedJsonInfo(listOfTimestamps, listOfLowPrices, listOfHighPrices, listOfClosePrises);
     }
 
     private JsonNode getRootOfJson(String jsonFileName) {

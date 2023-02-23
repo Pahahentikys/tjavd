@@ -17,7 +17,7 @@ public enum JsonNodeName {
 
     QUOTE("quote"),
 
-    OPEN("open"),
+    LOW("low"),
 
     CLOSE("close"),
 
