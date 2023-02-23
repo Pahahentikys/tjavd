@@ -7,6 +7,8 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 /**
  * Entity with main info about an actions company prices
@@ -18,11 +20,13 @@ import java.math.BigDecimal;
 @Table
 public class CompanyInfo {
     @PrimaryKey
-    private int id;
+    private UUID uuid;
+
+    private ZonedDateTime zonedDateTime;
 
     private String name;
 
-    private BigDecimal openPrice;
+    private BigDecimal closePrice;
 
     private BigDecimal highPrice;
 
