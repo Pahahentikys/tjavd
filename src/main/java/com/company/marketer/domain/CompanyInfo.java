@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Table
+@Table(value = "company_info")
 public class CompanyInfo {
     @PrimaryKey
     private UUID uuid;
