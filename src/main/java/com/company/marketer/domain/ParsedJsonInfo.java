@@ -13,11 +13,11 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE)
 public class ParsedJsonInfo {
-    private List<Integer> timestamp;
+    private List<Integer> timestamps;
 
-    private List<BigDecimal> open;
+    private List<BigDecimal> openPrices;
 
-    private List<BigDecimal> high;
+    private List<BigDecimal> highPrices;
 
-    private List<BigDecimal> close;
+    private List<BigDecimal> closePrices;
 }

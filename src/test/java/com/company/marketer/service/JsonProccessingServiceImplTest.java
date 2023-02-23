@@ -30,8 +30,8 @@ class JsonProccessingServiceImplTest {
 
         int expectedArraySize = 4333;
 
-        assertEquals(expectedArraySize, parsedInfo.getClose().size());
-        assertEquals(expectedArraySize, parsedInfo.getOpen().size());
-        assertEquals(expectedArraySize, parsedInfo.getHigh().size());
+        assertEquals(expectedArraySize, parsedInfo.getClosePrices().size());
+        assertEquals(expectedArraySize, parsedInfo.getOpenPrices().size());
+        assertEquals(expectedArraySize, parsedInfo.getHighPrices().size());
     }
 }
