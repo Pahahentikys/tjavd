@@ -24,8 +24,9 @@ class JsonProccessingServiceImplTest {
     }
 
     @Test
-    void getParsedInfoTest() {
-        var parsedInfo = jsonProccessingService.getParsedInfo("AAL.json");
+    @DisplayName("Test on method for json parsing")
+    void parseJsonFileTest() {
+        var parsedInfo = jsonProccessingService.parseJsonFile("AAL.json");
 
         int expectedArraySize = 4333;
 

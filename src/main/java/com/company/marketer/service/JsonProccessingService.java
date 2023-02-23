@@ -6,5 +6,5 @@ import lombok.NonNull;
 public interface JsonProccessingService {
 
     @NonNull
-    ParsedJsonInfo getParsedInfo(@NonNull String jsonFileName);
+    ParsedJsonInfo parseJsonFile(@NonNull String jsonFileName);
 }

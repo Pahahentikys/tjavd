@@ -20,7 +20,7 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
     private final ObjectMapper objectMapper;
 
     @NonNull
-    public ParsedJsonInfo getParsedInfo(@NonNull String jsonFileName) {
+    public ParsedJsonInfo parseJsonFile(@NonNull String jsonFileName) {
             var root = getRootOfJson(jsonFileName);
 
             var chart = root.get("chart");
