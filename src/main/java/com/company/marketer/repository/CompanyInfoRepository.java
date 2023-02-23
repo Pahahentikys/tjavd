@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,4 +25,7 @@ public interface CompanyInfoRepository extends ReactiveCassandraRepository<Compa
             " where name = :name " +
             " limit 1")
     Mono<CompanyInfo> findLastByName(@NonNull String name);
+
+    @AllowFiltering
+    Mono<CompanyInfo> findByNameAndDate(@NonNull String name, @NonNull LocalDate date);
 }
