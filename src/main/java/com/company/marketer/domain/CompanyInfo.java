@@ -7,7 +7,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -22,7 +22,7 @@ public class CompanyInfo {
     @PrimaryKey
     private UUID uuid;
 
-    private ZonedDateTime zonedDateTime;
+    private LocalDate date;
 
     private String name;
 
