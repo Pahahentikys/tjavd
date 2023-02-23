@@ -7,6 +7,7 @@ import lombok.NonNull;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CompanyInfoService {
@@ -15,4 +16,6 @@ public interface CompanyInfoService {
     Mono<CompanyInfo> findLastByName(@NonNull String name);
 
     Mono<Void> storeDataWithFilteringOnExistingInfo(@NonNull List<CompanyInfo> listOfCompanies, @NonNull CompanyName companyName);
+
+    Mono<CompanyInfo> findByNameAndDate(@NonNull String name, @NonNull LocalDate date);
 }

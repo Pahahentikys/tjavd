@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,6 +26,11 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Override
     public Mono<CompanyInfo> findLastByName(@NonNull String name) {
         return companyInfoRepository.findLastByName(name);
+    }
+
+    @Override
+    public Mono<CompanyInfo> findByNameAndDate(@NonNull String name, @NonNull LocalDate date) {
+        return companyInfoRepository.findByNameAndDate(name, date);
     }
 
     @Override
