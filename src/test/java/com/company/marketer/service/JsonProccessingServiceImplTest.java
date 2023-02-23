@@ -1,7 +1,6 @@
 package com.company.marketer.service;
 
 import com.company.marketer.service.impl.JsonProccessingServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,16 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Json processing test")
 class JsonProccessingServiceImplTest {
 
-    private ObjectMapper objectMapper;
-
-    private JsonProccessingServiceImpl jsonProccessingService;
+    private JsonProccessingService jsonProccessingService;
 
 
     @BeforeEach
     void setUp() {
-        objectMapper = new ObjectMapper();
-
-        jsonProccessingService = new JsonProccessingServiceImpl(objectMapper);
+        jsonProccessingService = new JsonProccessingServiceImpl();
     }
 
     @Test

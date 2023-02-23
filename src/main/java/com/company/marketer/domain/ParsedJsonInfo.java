@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -13,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE)
 public class ParsedJsonInfo {
-    private List<Integer> timestamps;
+    private List<ZonedDateTime> dateTimes;
 
     private List<BigDecimal> lowPrices;
 

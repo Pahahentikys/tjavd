@@ -6,12 +6,15 @@ import com.company.marketer.service.JsonProccessingService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.company.marketer.enums.JsonNodeName.*;
@@ -21,7 +24,8 @@ import static com.company.marketer.enums.JsonNodeName.*;
 public class JsonProccessingServiceImpl implements JsonProccessingService {
     private static final int FIRST_IDX_IN_ARR = 0;
 
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule());
 
     @NonNull
     public ParsedJsonInfo parseJsonFile(@NonNull String jsonFileName) {
@@ -43,7 +47,7 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
     }
 
     private ParsedJsonInfo buildParsedJsonInfo(@NonNull JsonNode timestamp, @NonNull JsonNode low, @NonNull JsonNode close, @NonNull JsonNode high) {
-        var listOfTimestamps = convertJsonNodeToListWithSuitableType(timestamp, new TypeReference<List<Integer>>(){});
+        var listOfDateTimes = convertJsonNodeToListWithSuitableType(timestamp, new TypeReference<List<ZonedDateTime>>(){});
 
         var listOfLowPrices = convertJsonNodeToListWithSuitableType(low, new TypeReference<List<BigDecimal>>(){});
 
@@ -51,7 +55,7 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
 
         var listOfHighPrices = convertJsonNodeToListWithSuitableType(high, new TypeReference<List<BigDecimal>>(){});
 
-        return new ParsedJsonInfo(listOfTimestamps, listOfLowPrices, listOfHighPrices, listOfClosePrises);
+        return new ParsedJsonInfo(listOfDateTimes, listOfLowPrices, listOfHighPrices, listOfClosePrises);
     }
 
     private JsonNode getRootOfJson(String jsonFileName) {
