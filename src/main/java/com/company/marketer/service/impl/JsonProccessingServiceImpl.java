@@ -19,6 +19,8 @@ import static com.company.marketer.enums.JsonNodeName.*;
 @Service
 @RequiredArgsConstructor
 public class JsonProccessingServiceImpl implements JsonProccessingService {
+    private static final int FIRST_IDX_IN_ARR = 0;
+
     private final ObjectMapper objectMapper;
 
     @NonNull
@@ -28,14 +30,14 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
             var chart = root.get(CHART.getValue());
             var result = chart.get(RESULT.getValue());
 
-            var timestamp = result.get(0).get(TIMESTAMP.getValue());
+            var timestamp = result.get(FIRST_IDX_IN_ARR).get(TIMESTAMP.getValue());
 
-            var indicators = result.get(0).get(INDICATORS.getValue());
+            var indicators = result.get(FIRST_IDX_IN_ARR).get(INDICATORS.getValue());
             var quote = indicators.get(QUOTE.getValue());
 
-            var open = quote.get(0).get(OPEN.getValue());
-            var close = quote.get(0).get(CLOSE.getValue());
-            var high = quote.get(0).get(HIGH.getValue());
+            var open = quote.get(FIRST_IDX_IN_ARR).get(OPEN.getValue());
+            var close = quote.get(FIRST_IDX_IN_ARR).get(CLOSE.getValue());
+            var high = quote.get(FIRST_IDX_IN_ARR).get(HIGH.getValue());
 
         return buildParsedJsonInfo(timestamp, open, close, high);
     }
