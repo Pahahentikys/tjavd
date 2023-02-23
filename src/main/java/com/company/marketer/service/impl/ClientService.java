@@ -1,6 +1,8 @@
-package com.company.marketer.client;
+package com.company.marketer.service.impl;
 
 
+import com.company.marketer.domain.Client;
+import com.company.marketer.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
