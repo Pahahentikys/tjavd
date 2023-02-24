@@ -158,7 +158,8 @@ class JsonProccessingServiceImplTest {
         when(resourceLoader.getResource(any())).thenReturn(mockResource);
         when(mockResource.getInputStream()).thenReturn(inputStream);
 
-        var parsedInfo = jsonProccessingService.parseJsonFile("AAL.json");
+        var parsedInfo = jsonProccessingService.parseJsonFile("AAL.json")
+                .blockOptional().get();
 
         int expectedArraySize = 3;
 
