@@ -10,7 +10,7 @@
                 url="http://localhost:8088"
                 token="29c96e47-5c4f-413d-8b24-348d3786ccf9"
                 host="localhost"
-                index="import_json_data_service"
+                index="marketer_app_idx"
                 type="raw"
                 source="http-event-logs"
                 sourcetype="log4j"
