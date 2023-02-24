@@ -1,0 +1,2 @@
+# Companies: AAL, AAPL, AAON, AAME
+POST http://localhost:8080/api/import-json/by-company-name/AAPL
