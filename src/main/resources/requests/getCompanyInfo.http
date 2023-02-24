@@ -1,2 +1,2 @@
 # Companies: AAL, AAPL, AAON, AAM
-GET http://localhost:8080/api/company-info/by-name-and-date?name=AAL&date=2022-12-12
+GET http://localhost:8092/api/company-info/by-name-and-date?name=AAL&date=2022-12-12
