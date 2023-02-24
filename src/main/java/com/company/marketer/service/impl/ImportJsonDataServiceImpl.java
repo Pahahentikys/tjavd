@@ -26,11 +26,12 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
 
     @Override
     public Mono<Void> importDataByCompanyName(@NonNull CompanyName companyName) {
-        var parsedInfo = jsonProccessingService.parseJsonFile(makeFileNameWithExtension(companyName));
-
-        var listOfCompanies = getListOfCompanyInfo(parsedInfo, companyName);
-
-        return companyInfoService.storeDataWithFilteringOnExistingInfo(listOfCompanies, companyName);
+        return jsonProccessingService.parseJsonFile(makeFileNameWithExtension(companyName))
+                .flatMap(pi -> {
+                    var listOfCompanies = getListOfCompanyInfo(pi, companyName);
+                    return companyInfoService.storeDataWithFilteringOnExistingInfo(listOfCompanies, companyName);
+                })
+                .onErrorResume(ex -> Mono.error(new IllegalArgumentException("Json parsing to ParsedJsonInfo entity error", ex)));
     }
 
     private List<CompanyInfo> getListOfCompanyInfo(@NonNull ParsedJsonInfo parsedJsonInfo, @NonNull CompanyName companyName) {

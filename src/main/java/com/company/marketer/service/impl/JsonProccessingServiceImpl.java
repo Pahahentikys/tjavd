@@ -11,6 +11,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -29,8 +30,7 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
 
     private final ResourceLoader resourceLoader;
 
-    @NonNull
-    public ParsedJsonInfo parseJsonFile(@NonNull String jsonFileName) {
+    public Mono<ParsedJsonInfo> parseJsonFile(@NonNull String jsonFileName) {
         var root = getRootOfJson(jsonFileName);
 
         var chart = root.get(CHART.getValue());
@@ -45,7 +45,7 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
         var close = quote.get(FIRST_IDX_IN_ARR).get(CLOSE.getValue());
         var high = quote.get(FIRST_IDX_IN_ARR).get(HIGH.getValue());
 
-        return buildParsedJsonInfo(timestamp, low, close, high);
+        return Mono.just(buildParsedJsonInfo(timestamp, low, close, high));
     }
 
     private ParsedJsonInfo buildParsedJsonInfo(@NonNull JsonNode timestamp, @NonNull JsonNode low, @NonNull JsonNode close, @NonNull JsonNode high) {
