@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
     private final CompanyInfoService companyInfoService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Mono<Void> importDataByCompanyName(@NonNull CompanyName companyName) {
         logger.info("[ImportJsonDataServiceImpl.importDataByCompanyName]: Json import data into DB started for company with name: %s".formatted(companyName));
 

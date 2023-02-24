@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,16 +24,19 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     private final CompanyInfoRepository companyInfoRepository;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Flux<CompanyInfo> saveAll(List<CompanyInfo> companyInfos) {
         return companyInfoRepository.saveAll(companyInfos);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Mono<CompanyInfo> findLastByName(@NonNull String name) {
         return companyInfoRepository.findLastByName(name);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Mono<CompanyInfo> findByNameAndDate(@NonNull String name, @NonNull LocalDate date) {
         logger.info("[CompanyInfoServiceImpl.findByNameAndDate]: Starting of search company info into db by name=%s and date=%s".formatted(name, date));
         return companyInfoRepository.findByNameAndDate(name, date)
@@ -40,6 +44,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Mono<Void> storeDataWithFilteringOnExistingInfo(@NonNull List<CompanyInfo> listOfCompanies, @NonNull CompanyName companyName) {
         logger.info("[CompanyInfoServiceImpl.storeDataWithFilteringOnExistingInfo] Started try to storing json parsed data into db for company: %s".formatted(companyName));
 
