@@ -22,6 +22,7 @@
 		<java.version>17</java.version>
 		<lombok.version>1.18.24</lombok.version>
 		<jackson-databind.version>2.14.1</jackson-databind.version>
+		<splunk-library-javalogging.version>1.11.7</splunk-library-javalogging.version>
 	</properties>
 
 	<repositories>
@@ -94,7 +95,7 @@
 		<dependency>
 			<groupId>com.splunk.logging</groupId>
 			<artifactId>splunk-library-javalogging</artifactId>
-			<version>1.11.7</version>
+			<version>${splunk-library-javalogging.version}</version>
 		</dependency>
 
 		<!-- Lombok -->
