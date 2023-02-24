@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -23,6 +25,8 @@ import static com.company.marketer.enums.JsonNodeName.*;
 @Service
 @RequiredArgsConstructor
 public class JsonProccessingServiceImpl implements JsonProccessingService {
+    Logger logger = LogManager.getLogger(JsonProccessingServiceImpl.class);
+
     private static final int FIRST_IDX_IN_ARR = 0;
 
     private final ObjectMapper objectMapper = new ObjectMapper()
@@ -31,6 +35,8 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
     private final ResourceLoader resourceLoader;
 
     public Mono<ParsedJsonInfo> parseJsonFile(@NonNull String jsonFileName) {
+        logger.info("[JsonProccessingServiceImpl.parseJsonFile] Started json parsing from file with name: %s".formatted(jsonFileName));
+
         var root = getRootOfJson(jsonFileName);
 
         var chart = root.get(CHART.getValue());
@@ -45,7 +51,8 @@ public class JsonProccessingServiceImpl implements JsonProccessingService {
         var close = quote.get(FIRST_IDX_IN_ARR).get(CLOSE.getValue());
         var high = quote.get(FIRST_IDX_IN_ARR).get(HIGH.getValue());
 
-        return Mono.just(buildParsedJsonInfo(timestamp, low, close, high));
+        return Mono.just(buildParsedJsonInfo(timestamp, low, close, high))
+                .doOnSuccess(pi -> logger.info("[JsonProccessingServiceImpl.parseJsonFile] Ended json parsing from file with name: %s".formatted(jsonFileName)));
     }
 
     private ParsedJsonInfo buildParsedJsonInfo(@NonNull JsonNode timestamp, @NonNull JsonNode low, @NonNull JsonNode close, @NonNull JsonNode high) {

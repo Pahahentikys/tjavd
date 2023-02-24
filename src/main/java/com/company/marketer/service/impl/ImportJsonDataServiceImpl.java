@@ -30,13 +30,14 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
 
     @Override
     public Mono<Void> importDataByCompanyName(@NonNull CompanyName companyName) {
-        logger.info("[ImportJsonDataServiceImpl]: Json parsing started for company with name: %s".formatted(companyName));
+        logger.info("[ImportJsonDataServiceImpl.importDataByCompanyName]: Json import data into DB started for company with name: %s".formatted(companyName));
 
         return jsonProccessingService.parseJsonFile(makeFileNameWithExtension(companyName))
                 .flatMap(pi -> {
                     var listOfCompanies = getListOfCompanyInfo(pi, companyName);
                     return companyInfoService.storeDataWithFilteringOnExistingInfo(listOfCompanies, companyName);
                 })
+                .doOnSuccess(i -> logger.info("[ImportJsonDataServiceImpl.importDataByCompanyName]: Json import data into DB completed for company with name: %s".formatted(companyName)))
                 .onErrorResume(ex -> Mono.error(new IllegalArgumentException("Json parsing to ParsedJsonInfo entity error", ex)));
     }
 
