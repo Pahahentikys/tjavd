@@ -14,7 +14,7 @@ import java.util.Arrays;
 @Component
 @RequiredArgsConstructor
 public class SchedulerJobs {
-    Logger logger = LogManager.getLogger(SchedulerJobs.class);
+    private final Logger logger = LogManager.getLogger(SchedulerJobs.class);
 
     private final ImportJsonDataService importJsonDataService;
 

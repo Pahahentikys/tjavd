@@ -25,7 +25,7 @@ import static com.company.marketer.enums.JsonNodeName.*;
 @Service
 @RequiredArgsConstructor
 public class JsonProccessingServiceImpl implements JsonProccessingService {
-    Logger logger = LogManager.getLogger(JsonProccessingServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(JsonProccessingServiceImpl.class);
 
     private static final int FIRST_IDX_IN_ARR = 0;
 

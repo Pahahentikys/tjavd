@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CompanyInfoServiceImpl implements CompanyInfoService {
-    Logger logger = LogManager.getLogger(CompanyInfoServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(CompanyInfoServiceImpl.class);
 
     private final CompanyInfoRepository companyInfoRepository;
 

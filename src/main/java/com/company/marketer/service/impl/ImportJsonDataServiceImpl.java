@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ImportJsonDataServiceImpl implements ImportJsonDataService {
-    Logger logger = LogManager.getLogger(ImportJsonDataServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(ImportJsonDataServiceImpl.class);
 
     private static final String JSON_EXT = ".json";
 
