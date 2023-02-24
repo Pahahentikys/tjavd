@@ -8,6 +8,8 @@ import com.company.marketer.service.ImportJsonDataService;
 import com.company.marketer.service.JsonProccessingService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +20,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ImportJsonDataServiceImpl implements ImportJsonDataService {
+    Logger logger = LogManager.getLogger(ImportJsonDataServiceImpl.class);
+
     private static final String JSON_EXT = ".json";
 
     private final JsonProccessingService jsonProccessingService;
@@ -26,6 +30,8 @@ public class ImportJsonDataServiceImpl implements ImportJsonDataService {
 
     @Override
     public Mono<Void> importDataByCompanyName(@NonNull CompanyName companyName) {
+        logger.info("[ImportJsonDataServiceImpl]: Json parsing started for company with name: %s".formatted(companyName));
+
         return jsonProccessingService.parseJsonFile(makeFileNameWithExtension(companyName))
                 .flatMap(pi -> {
                     var listOfCompanies = getListOfCompanyInfo(pi, companyName);
