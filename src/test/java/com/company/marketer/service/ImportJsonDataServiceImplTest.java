@@ -1,6 +1,5 @@
 package com.company.marketer.service;
 
-import com.company.marketer.domain.CompanyInfo;
 import com.company.marketer.domain.ParsedJsonInfo;
 import com.company.marketer.enums.CompanyName;
 import com.company.marketer.service.impl.ImportJsonDataServiceImpl;
@@ -8,13 +7,11 @@ import com.company.marketer.service.impl.JsonProccessingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
@@ -50,20 +47,12 @@ public class ImportJsonDataServiceImplTest {
                 highPrices,
                 closePrices);
 
-        var companyInfo = new CompanyInfo(
-                UUID.randomUUID(),
-                LocalDate.parse("2005-09-27"),
-                CompanyName.AAL.name(),
-                closePrices.get(0),
-                highPrices.get(0),
-                lowPrices.get(0));
+        when(jsonProccessingService.parseJsonFile(any())).thenReturn(Mono.just(parsedJsonInfo));
+        when(companyInfoService.storeDataWithFilteringOnExistingInfo(anyList(), any())).thenReturn(Mono.empty());
 
-        when(jsonProccessingService.parseJsonFile(any())).thenReturn(parsedJsonInfo);
-        when(companyInfoService.saveAll(anyList())).thenReturn(Flux.just(companyInfo));
-
-        importJsonDataService.importDataByCompanyName(CompanyName.AAL);
+        importJsonDataService.importDataByCompanyName(CompanyName.AAL).blockOptional();
 
         verify(jsonProccessingService).parseJsonFile(any());
-        verify(companyInfoService).saveAll(anyList());
+        verify(companyInfoService).storeDataWithFilteringOnExistingInfo(anyList(), any());
     }
 }
