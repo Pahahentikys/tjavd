@@ -28,7 +28,7 @@ All application activities should be logged. The application should provide Splu
 
 1. Json parsing process
 2. Store data into CassandraDB without excessive resaving
-3. Developed API for getting info about price of company: closed price, low and hugh price on date
+3. Developed API for getting info about price of company: closed price, low and high price on date
 4. Scheduler for importing data with crone config with using app.properties
 
 As additional:
